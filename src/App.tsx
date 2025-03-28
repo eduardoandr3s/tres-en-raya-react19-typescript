@@ -41,13 +41,13 @@ function Board({ xIsNext, squares, onPlay }: BoardProps) {
 
   }
 
-  const {winner, winningSquares} = calculateWinner(squares);
+  const { winner, winningSquares } = calculateWinner(squares);
   const isDraw = squares.every((Square) => Square !== null) && !winner;
 
   let status;
   if (winner) {
     status = "Ganador: " + winner;
-  } else if(isDraw){
+  } else if (isDraw) {
     status = "Empate";
   } else {
     status = "Siguiente jugador: " + (xIsNext ? 'X' : 'O');
@@ -70,6 +70,7 @@ function Board({ xIsNext, squares, onPlay }: BoardProps) {
     }
     board.push(
       <div key={row} className="board-row">
+        <span className="row-number">{row + 1}</span> {/*etiqueta número de fila*/}
         {squaresRow}
       </div>
     );
@@ -77,8 +78,17 @@ function Board({ xIsNext, squares, onPlay }: BoardProps) {
   }
   return (
     <>
-      <div className="status">{status}</div>
-      {board}
+      <div className="status"><h1>{status}</h1></div>
+      <div className="board-container">
+        <div className="column-numbers">
+        {[1, 2, 3].map((col) => (
+          <span key={col} className="column-number">
+            {col}
+            </span>
+          ))}
+        </div>
+             <div className="board">{board}</div>
+      </div>
     </>
   )
 }
@@ -106,16 +116,28 @@ export default function Game() {
 
   const moves = history.map((squares, move) => {
     let description;
+    let row;
+    let col;
+
+    
     if (move > 0) {
-      description = 'Ir al movimiento #' + move;
+        //Con esto saco el indice del cuadrado que cambió
+      const previousSquares = history[move - 1];
+      const currentSquares = history[move];
+      const changedIndex = currentSquares.findIndex((square, index) => square !== previousSquares[index]);
+
+      //Con esto saco la fila y columna del cuadrado que cambió
+        row = Math.floor(changedIndex / 3) + 1; // el 1 se lo sumo para que las filas comiencen en 1
+        col = (changedIndex % 3) + 1; // el 1 se lo sumo para que las columnas comiencen en 1
+      description = `Ir al movimiento # ${move} (col: ${col}, fil: ${row})`;
     } else {
       description = 'Ir al inicio del juego';
     }
 
     if (move === currentMove) {
       return (
-        <li key={move}>
-          <span>Estás en el movimiento #{move}</span>
+        <li key={move} style={{ marginTop : '8px'}}>
+         <strong><span>Estás en el movimiento #{move} (col: {col} fil: {row}) </span></strong> 
         </li>
       )
     }
@@ -123,7 +145,9 @@ export default function Game() {
 
     return (
       <li key={move}>
-        <button onClick={() => jumpTo(move)}>{description}</button>
+        <button 
+        className="move-button"
+        onClick={() => jumpTo(move)}>{description}</button>
       </li>
     )
 
@@ -139,8 +163,8 @@ export default function Game() {
       </div>
       <div className="game-info">
         <button onClick={() => setIsAscending(!isAscending)}> {isAscending ? 'Ordenar Descendente' : 'Ordenar Ascendente'}</button>
-        
-        
+
+
         <ul>
           {sortedMoves}
         </ul>
@@ -166,8 +190,8 @@ function calculateWinner(squares: Array<'X' | 'O' | null>): { winner: 'X' | 'O' 
   for (let i = 0; i < lines.length; i++) {
     const [a, b, c] = lines[i];
     if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-      return {winner: squares[a], winningSquares: [a, b, c]};
+      return { winner: squares[a], winningSquares: [a, b, c] };
     }
   }
-  return {winner: null, winningSquares: []};
+  return { winner: null, winningSquares: [] };
 }

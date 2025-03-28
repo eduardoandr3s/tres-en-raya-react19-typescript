@@ -6,11 +6,12 @@ body {
   font-family: sans-serif;
   margin: 20px;
   padding: 0;
+  background-color: #aef2c1;
 }
 
 h1 {
   margin-top: 0;
-  font-size: 22px;
+  font-size: 40px;
 }
 
 h2 {
@@ -44,6 +45,7 @@ code {
 
 ul {
   padding-inline-start: 20px;
+list-style-type: none;
 }
 
 * {
@@ -57,7 +59,7 @@ body {
 }
 
 .square {
-  background: #fff;
+  background: #f9f4f4;
   border: 1px solid #999;
   float: left;
   font-size: 80px;
@@ -88,16 +90,53 @@ body {
   
 }
 
+
 .game-info {
   margin-left: 20px;
-  font-size: large;
+  background-color: #bcdff7;
+  padding: 20px;
+  border-radius: 45px;  
+  border: solid 2px #84d1ae;
+}
+.game-info button {
+  margin-left: 20px;
+  font-size: 18px;
+  
 }
 
 .square.winning-square {
-  background-color: green; 
+  background-color: #bcdff7; 
 }
 
-button {
+.move-button {
   font-size: 18px;
   margin-top: 8px;
+  color: #333;
+  background-color: #f4f4f4;
+  border-radius: 25px;
+}
+.board-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.column-numbers {
+  display: flex;
+  justify-content: flex-start;
+  margin-left: 30px; 
+  margin-bottom: 8px;
+}
+.column-number {
+  width: 100px; 
+  text-align: center;
+  font-weight: bold;
+}
+.board-row {
+  display: flex;
+  align-items: center;
+}
+.row-number {
+  width: 30px; 
+  text-align: center;
+  font-weight: bold;
 }
